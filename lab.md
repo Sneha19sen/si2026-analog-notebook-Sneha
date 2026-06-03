@@ -1,12 +1,5 @@
 # Lab Notebook
 
-Maintain Lab notebook here.
-
-# Lab 1: Linux, vim and git
-
-
-# Lab Notebook
-
 # Lab 1: Getting Started with Vi, Linux Commands, and Git
 
 This first lab introduced the basics of working in a Linux terminal, editing files with **vi**, and using Git to create and clone repositories. The main goal was to become comfortable with common command-line tasks, simple text editing, and basic version control. Git is used to track file changes and manage project history, while `git clone` creates a local copy of a remote repository [web:11][web:12].
