@@ -1,5 +1,7 @@
 # Lab Notebook
 
+Maintain Lab notebook here.
+
 # Lab 1: Getting Started with Vi, Linux Commands, and Git
 
 This first lab introduced the basics of working in a Linux terminal, editing files with **vi**, and using Git to create and clone repositories. The main goal was to become comfortable with common command-line tasks, simple text editing, and basic version control. Git is used to track file changes and manage project history, while `git clone` creates a local copy of a remote repository [web:11][web:12].
@@ -282,6 +284,98 @@ PLOT (2*Vid2#branch)^0.5  vs V(D)
 - The RC circuit showed delayed charging and discharging due to the capacitor.
 - The NMOS study demonstrated how transistor current changes with voltage bias and how SPICE can be used for device characterization.
 
-## Conclusion
+# Voltage Divider Experiment using ADALM Kit and Scopy
 
-This lab introduced three important circuit-analysis ideas: voltage division, Thevenin equivalence, and RC transient response. It also added a transistor-based simulation using an NMOS model. Together, these experiments built a strong foundation for understanding both basic passive circuits and more advanced semiconductor devices.
+## Overview
+This project demonstrates the use of the **ADALM2000 kit** with **Scopy software (v1.5.0)** to measure voltages across a simple voltage divider circuit. The experiment highlights real-time voltage monitoring using Scopy’s **Voltmeter tool**.
+
+## Circuit Details
+- **Circuit Type:** Voltage Divider  
+- **Resistor Used (R):** 1 kΩ  
+- **Configuration:** Two resistors connected in series, input voltage applied across the series, output voltage measured across one resistor.
+
+## Tools Used
+- **Hardware:** ADALM2000 (Analog Devices Active Learning Module)  
+- **Software:** Scopy v1.5.0  
+- **Measurement Tool:** Voltmeter (Channels 1 & 2)
+
+## Measurement Results
+### Channel 1 (Orange)
+- **Minimum Voltage:** 0.233 V  
+- **Maximum Voltage:** 2.522 V  
+- **Current Reading:** 2.472 V DC  
+
+### Channel 2 (Purple)
+- **Minimum Voltage:** -0.067 V  
+- **Maximum Voltage:** 1.249 V  
+- **Current Reading:** 1.247 V DC  
+
+## Scopy Interface Snapshot
+Below is the screenshot of the Scopy Voltmeter tool showing the real-time measurements:
+
+![Scopy Voltmeter Screenshot](./m2k-labs/Voltagedivider.png)
+
+
+
+## Observations
+- The voltage divider correctly splits the input voltage across the two resistors.  
+- Channel 1 shows the higher voltage (closer to input), while Channel 2 shows the divided voltage.  
+- The readings confirm the expected behavior of a voltage divider circuit.
+
+## Conclusion
+This experiment validates the functionality of the voltage divider using a **1 kΩ resistor setup** and demonstrates how the **ADALM2000 kit with Scopy** can be used for accurate voltage measurements and visualization.
+ Scopy’s Signal Generator and Oscilloscope modules for educational and diagnostic purposes.
+
+ # Signal Generation and Oscilloscope Analysis using ADALM Kit and Scopy
+
+## Overview
+This experiment demonstrates how to use the **Signal Generator (W1)** in **Scopy (v1.5.0)** to produce a sine wave and observe it in real time using the **Oscilloscope (Channel 1)**. The setup highlights waveform generation, parameter control, and signal visualization.
+
+## Circuit / Setup Details
+- **Hardware:** ADALM2000 Active Learning Module  
+- **Software:** Scopy v1.5.0  
+- **Tools Used:** Signal Generator (W1), Oscilloscope (CH1)  
+- **Waveform Type:** Sine Wave  
+- **Connections:**  
+  - W1 output from Signal Generator connected to Oscilloscope Channel 1 input  
+  - Channel 2 left unconnected (baseline reference)
+
+## Signal Generator Parameters
+- **Amplitude:** 10 Vpp (Peak-to-Peak)  
+- **Frequency:** 1 kHz  
+- **Offset:** 0 µV  
+- **Phase:** 0°  
+- **Noise:** Disabled  
+
+## Oscilloscope Measurements
+### Channel 1 (Orange Sine Wave)
+- **Time Base:** 100 µs/div  
+- **Voltage Scale:** 2 V/div  
+- **Observed Signal:** Clear sine wave at 1 kHz, 10 Vpp  
+
+### Channel 2 (Blue Line)
+- **Observed Signal:** Flat baseline at 0 V (no input connected)
+
+## Scopy Interface Snapshots
+### Signal Generator Output (W1 → CH1)
+![Scopy Signal Generator Screenshot](./m2k-labs/Frequencygenoutput.png)
+
+### Oscilloscope Observation (CH1)
+![Scopy Oscilloscope Screenshot](./m2k-labs/freqgeninput.png)
+
+*(Ensure the image paths match the actual filenames in your repo.)*
+
+## Observations
+- The Signal Generator (W1) successfully produced a stable sine wave at the configured parameters.  
+- The Oscilloscope (CH1) confirmed the waveform characteristics (frequency, amplitude, and phase).  
+- Channel 2 remained flat, validating that no signal was applied.  
+- The experiment demonstrates how Scopy integrates signal generation and measurement seamlessly.
+
+## Conclusion
+This lab illustrates the process of generating and analyzing signals using the **ADALM2000 kit**. The results confirm the accuracy of Scopy’s Signal Generator and Oscilloscope modules for educational and diagnostic purposes.
+
+---
+
+
+
+---
