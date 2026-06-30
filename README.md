@@ -1,6 +1,5 @@
 # Analog Integrated Circuit (IC) Design
 ---------------------------------------------------------------------------------------
-
 ## Summer Internship course 2026
 ---------------------------------------------------------------------------------------
 ### COURSE OUTCOME
@@ -11,9 +10,9 @@
 - Mastery of design tools: ngspice, xscheme, magic, netgen & Python.
 
 ### COURSE DETAIlL
-***1. Introduction to an electronic system design, a plug-n-play USB-MIDI microphone.***
+***1. Introduction to an electronic system design, a plug-n-play USB-MEMS microphone.***
  - Microphone pre-amplifier and interface circuit design.
- - Select an widely available Op-Amp for the preamplifier e.g. TI OPA 344
+ - Select an widely available Op-Amp for the preamplifier.
  - Derive the important specs for the CMOS Op-Amp design.
 
 ***2. Introduction to linear circuits and passive devices***
