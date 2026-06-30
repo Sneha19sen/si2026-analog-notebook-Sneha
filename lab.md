@@ -395,7 +395,7 @@ Key specs from the microphone [Datasheet](https://cdn.sparkfun.com/assets/0/5/8/
 - **Rth** (from datasheet) = 380 ohms.
 
 ### Circuit Diagram of Mic System
-![Mic Circuit](./m2k-labs/miccircuit.png)
+![Mic Circuit](./sch/miccircuit.png)
 
 **From Sparkfun schematic:**
 - Rin=5k, Rfb=300k, therefore Gain = 60
@@ -404,5 +404,181 @@ Key specs from the microphone [Datasheet](https://cdn.sparkfun.com/assets/0/5/8/
 - Input high-pass frequency = $1/2\pi RC = 1/2\pi 5k 4.7uF = 6.77 Hz$
 - Feedback Low-pass filter frequency = $1/2\pi RC = 1/2\pi 300k 27pF = 19.6kHz $
 - Input common-mode filter = $1/2\pi 10k 1uF = 15.9 Hz$
-![Mic Schematic](./m2k-labs/micsch.png)
+![Mic Schematic](./sch/micsch.png)
+## Magnitude and Phase Response
+
+An AC analysis was performed to study the frequency response of the microphone preamplifier. The magnitude response shows a **peak gain of approximately 27 dB** with a −3 dB bandwidth of about 14.1 kHz. Beyond this frequency, the gain gradually decreases due to the amplifier's bandwidth limitations.
+
+The phase response shows an increasing phase lag as the frequency increases, which is the expected behavior of the op-amp and the associated passive components. The results confirm that the preamplifier operates effectively over the intended audio frequency range.
+![Magnitude and Phase plot](./sch/magandphase.png)
+
+## Transient Response
+
+A transient analysis was performed by applying a **1 kHz sinusoidal input** with an amplitude of **126 µV** to the microphone preamplifier. The output waveform is centered around the DC bias voltage of **1.25 V**, demonstrating proper mid-supply biasing for single-supply operation.
+
+From the simulation, the output signal has a peak amplitude of approximately **7.43 mV**, corresponding to a voltage gain of approximately **59** (≈ **35.4 dB**). The output waveform closely follows the input without noticeable distortion, confirming that the amplifier provides stable amplification while maintaining signal integrity within the desired operating range.
+![Vin Vs Vout](./sch/VinVout.png)
+
+## Practical Circuit Implementation
+
+The practical implementation consists of a microphone preamplifier designed using an operational amplifier model in NGSpice. A **2.5 V battery supply** is used to power the circuit, while a **voltage divider (R3 and R4)** generates a stable **1.25 V reference voltage (Vref)** to bias the amplifier for single-supply operation.
+
+The microphone input is represented by a sinusoidal voltage source (**Vmic**). The input signal is AC-coupled through **C2**, which blocks any DC component before it enters the amplifier. Resistors **R1** and **R2** provide input conditioning and set the input impedance.
+
+The amplifier stage is modeled using a **high-gain voltage-controlled voltage source (E1)**, while **R5**, **R6**, and **C3** form the negative feedback network that determines the closed-loop gain and improves circuit stability. The output stage (**E2**) acts as a buffer, providing low output impedance to drive the load. Capacitors **C4** and **C5** are included for output filtering and stability.
+
+A transient simulation (`.tran`) is performed to observe the input and output waveforms. The NGSpice control script automatically measures the peak values of the input and output signals and calculates the voltage gain.
+
+![Practical circuit](./sch/practicalmic.png)
+
+## Simulation Output
+
+The transient simulation validates the operation of the microphone preamplifier by comparing the input and output waveforms. The **left plot** shows the microphone input signal, a sinusoidal waveform with a peak amplitude of approximately **126 μV**. The **right plot** shows the amplified output signal centered around the **1.25 V bias voltage**, demonstrating proper single-supply operation while preserving the AC signal.
+
+The NGSpice measurement results indicate an input peak amplitude of approximately **126 μV** and an output peak amplitude of approximately **7.42 mV**.
+
+The amplified output maintains the same frequency as the input while exhibiting a significantly larger amplitude, confirming the correct operation of the amplifier and the effectiveness of the feedback network. The simulation therefore verifies that the designed circuit provides a **voltage gain of approximately 59 V/V** without introducing distortion under the given operating conditions.
+
+![Output](./sch/pracoutput.png)
+
+# MOSFET Parameter Extraction using ngspice (Sky130 PDK)
+
+## 📌 Overview
+This report documents simulations performed in **ngspice** to extract MOSFET parameters.  
+The experiments include:
+- **Level‑1 vs Level‑49 model comparison** of Id–Vgs characteristics.
+- **Threshold voltage (Vt) extraction** using different bias points.
+- **Overall parameter calculation** including Vt and body effect coefficient (γ).
+
 ---
+
+## 🖼️ Simulation Snapshots
+
+### 1. Level‑1 vs Level‑49 Id–Vgs Comparison
+![Level1 vs Level49 Id-Vgs](./sch/Nmosdiodeconnlvl1vslvl49.png)
+
+- **Description:** Id–Vgs characteristics plotted for NMOS using two different SPICE models:  
+  - **Level-1:** Simplified analytical MOSFET model.  
+  - **Level-49:** BSIM3 advanced model with process parameters.  
+
+- **Observation:**  
+  - Level-1 curve shows idealized behavior.  
+  - Level-49 curve captures short-channel effects, mobility degradation, and realistic threshold voltage.  
+
+- **Extracted Parameters:**  
+  - $V_t \approx 0.514 \, \text{V}$  
+  - $\gamma \approx 0.737$  
+
+---
+### 2. Threshold Voltage Extraction (Method A)
+![VT Extraction Method A](./sch/NmosdiodeconnVT0lvl48.png)
+- **Circuit:** Diode-connected NMOS (gate tied to drain).  
+- **Method:** Sweep $V_{gs}$ from 0–1.8 V, compute $\sqrt{I_d}$, and extrapolate.  
+- **Result:**  
+  - $V_{T0} \approx 0.518 \, \text{V}$  
+
+---
+
+### 3. Threshold Voltage Extraction (Method B)
+![VT Extraction Method B](./sch/NmosdiodeconnVT1lvl48.png)
+
+- **Circuit:** Same diode-connected NMOS, but evaluated at a different bias point.  
+- **Method:** Derivative of $\sqrt{I_d}$ at $V_{gs} = 1.2 \, \text{V}$.  
+- **Result:**  
+  - $V_{T0} \approx 0.729 \, \text{V}$  
+- **Note:** Higher threshold due to body bias effect.
+---
+
+### 4. Overall Vt and γ Calculation
+![VT and Gamma Calculation](./sch/NmosdiodeconnVTandgammalvl48.png)
+### Post-Processing Equations
+
+- Kp = (2/5) × (d_rt_id)²  
+- Vt = 1.2 − (rt_id / d_rt_id)  
+- γ = (0.7292 − 0.5178) / (√0.8461 − √0.846)  
+---
+---
+
+### Extracted Values
+
+- Kp ≈ 1.80 × 10⁻⁴  
+- Vt ≈ 0.518 V  
+- γ ≈ 0.482
+
+---
+
+## 📊 Summary of Results
+## Summary of Results
+
+| Experiment                     | Parameter(s)           | Value(s) |
+|--------------------------------|------------------------|----------|
+| Level-1 vs Level-49           | Threshold voltage, γ   | Vt ≈ 0.514 V, γ ≈ 0.737 |
+| Vt Extraction (Method A)      | Threshold voltage      | Vt ≈ 0.518 V |
+| Vt Extraction (Method B)      | Threshold voltage      | Vt ≈ 0.729 V |
+| Overall Calculation           | Kp, Vt, γ              | Kp ≈ 1.8 × 10⁻⁴, Vt ≈ 0.518 V, γ ≈ 0.482 |
+
+---
+
+## 📝 Conclusion
+- **Level‑49 model** provides realistic MOSFET behavior compared to the idealized Level‑1.  
+- **Threshold voltage** varies depending on extraction method and bias point, confirming the **body effect**.  
+- **γ (body effect coefficient)** quantifies the sensitivity of Vt to substrate bias.  
+- These simulations demonstrate how ngspice can be used for **device characterization** in semiconductor design.
+
+---
+### Two-Stage CMOS Operational Amplifier: DC and AC Performance Analysis
+## 1. DC Sweep Analysis (Id–Vgs & Vout)
+
+![DC Sweep](./sch/2stageopamp.png)
+
+- **Circuit:** Two-stage CMOS operational amplifier (differential input + current mirror load + gain stage).  
+- **Method:** DC sweep performed by varying input voltage from 0 to 1.8 V.  
+
+- **Observations:**  
+  - Drain current increases nonlinearly with $V_{gs}$, showing typical MOSFET saturation behavior.  
+  - Output voltage ($V_{out}$) rises gradually after threshold and shows strong gain region.  
+
+- **Key Insight:**  
+  - The transition region indicates the effective threshold voltage of the input pair.  
+  - Nonlinear slope confirms square-law behavior in saturation.
+
+---
+
+### 2. AC Frequency Response (Gain vs Frequency)
+
+![Frequency Response (dB)](./sch/2stageopampfreqanalysis.png)
+
+- **Method:** AC analysis using small-signal input over a wide frequency range (1 Hz to GHz).  
+
+- **Observations:**  
+  - High DC gain of approximately **70–75 dB**.  
+  - Gain decreases with frequency, showing a dominant pole.  
+  - Slope ≈ **-20 dB/decade** initially, indicating single-pole behavior.  
+  - Additional poles cause steeper roll-off at higher frequencies.  
+- **Key Parameters:**  
+  - **DC Gain:** ~70 dB  
+  - **Bandwidth:** Limited by dominant pole  
+
+- **Conclusion:**  
+  - Circuit is stable with dominant pole compensation.  
+  - Suitable for low-frequency amplification applications.
+
+---
+
+### 3. Output Frequency Response (Linear Scale)
+
+![Output Response](./sch/2stageopampoutput.png)
+
+- **Method:** AC analysis observing $V_{out}$ magnitude in linear scale.  
+
+- **Observations:**  
+  - Output voltage is high at low frequencies (~5 V gain equivalent).  
+  - Rapid drop in output magnitude after cutoff frequency.  
+
+- **Key Insight:**  
+  - Sharp roll-off indicates dominant pole.  
+  - Confirms gain-bandwidth trade-off.  
+
+- **Conclusion:**  
+  - Strong low-frequency gain but limited high-frequency performance.
+  - ---
