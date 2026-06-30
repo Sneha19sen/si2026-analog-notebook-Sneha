@@ -435,13 +435,7 @@ A transient simulation (`.tran`) is performed to observe the input and output wa
 
 The transient simulation validates the operation of the microphone preamplifier by comparing the input and output waveforms. The **left plot** shows the microphone input signal, a sinusoidal waveform with a peak amplitude of approximately **126 μV**. The **right plot** shows the amplified output signal centered around the **1.25 V bias voltage**, demonstrating proper single-supply operation while preserving the AC signal.
 
-The NGSpice measurement results indicate an input peak amplitude of approximately **126 μV** and an output peak amplitude of approximately **7.42 mV**. Using these values, the calculated voltage gain is:
-
-\[
-A_v = \frac{V_{\text{out,peak}}}{V_{\text{in,peak}}}
-     = \frac{7.42\ \text{mV}}{126\ \mu\text{V}}
-     \approx 58.9
-\]
+The NGSpice measurement results indicate an input peak amplitude of approximately **126 μV** and an output peak amplitude of approximately **7.42 mV**.
 
 The amplified output maintains the same frequency as the input while exhibiting a significantly larger amplitude, confirming the correct operation of the amplifier and the effectiveness of the feedback network. The simulation therefore verifies that the designed circuit provides a **voltage gain of approximately 59 V/V** without introducing distortion under the given operating conditions.
 
