@@ -427,13 +427,8 @@ The microphone input is represented by a sinusoidal voltage source (**Vmic**). T
 
 The amplifier stage is modeled using a **high-gain voltage-controlled voltage source (E1)**, while **R5**, **R6**, and **C3** form the negative feedback network that determines the closed-loop gain and improves circuit stability. The output stage (**E2**) acts as a buffer, providing low output impedance to drive the load. Capacitors **C4** and **C5** are included for output filtering and stability.
 
-A transient simulation (`.tran`) is performed to observe the input and output waveforms. The NGSpice control script automatically measures the peak values of the input and output signals and calculates the voltage gain using:
+A transient simulation (`.tran`) is performed to observe the input and output waveforms. The NGSpice control script automatically measures the peak values of the input and output signals and calculates the voltage gain.
 
-\[
-\text{Gain} = \frac{V_{\text{out,peak}}}{V_{\text{in,peak}}}
-\]
-
-This implementation verifies the amplifier's functionality by comparing the amplified output with the applied microphone input and evaluating its gain under transient conditions.
 ![Practical circuit](./sch/practicalmic.png)
 
 ## Simulation Output
