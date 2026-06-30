@@ -1,7 +1,4 @@
 # Lab Notebook
-
-Maintain Lab notebook here.
-
 # Lab 1: Getting Started with Vi, Linux Commands, and Git
 
 This first lab introduced the basics of working in a Linux terminal, editing files with **vi**, and using Git to create and clone repositories. The main goal was to become comfortable with common command-line tasks, simple text editing, and basic version control. Git is used to track file changes and manage project history, while `git clone` creates a local copy of a remote repository [web:11][web:12].
@@ -443,7 +440,7 @@ The amplified output maintains the same frequency as the input while exhibiting 
 
 # MOSFET Parameter Extraction using ngspice (Sky130 PDK)
 
-## 📌 Overview
+##  Overview
 This report documents simulations performed in **ngspice** to extract MOSFET parameters.  
 The experiments include:
 - **Level‑1 vs Level‑49 model comparison** of Id–Vgs characteristics.
@@ -452,7 +449,7 @@ The experiments include:
 
 ---
 
-## 🖼️ Simulation Snapshots
+## Simulations
 
 ### 1. Level‑1 vs Level‑49 Id–Vgs Comparison
 ![Level1 vs Level49 Id-Vgs](./sch/Nmosdiodeconnlvl1vslvl49.png)
@@ -506,8 +503,6 @@ The experiments include:
 - γ ≈ 0.482
 
 ---
-
-## 📊 Summary of Results
 ## Summary of Results
 
 | Experiment                     | Parameter(s)           | Value(s) |
@@ -519,7 +514,7 @@ The experiments include:
 
 ---
 
-## 📝 Conclusion
+##  Conclusion
 - **Level‑49 model** provides realistic MOSFET behavior compared to the idealized Level‑1.  
 - **Threshold voltage** varies depending on extraction method and bias point, confirming the **body effect**.  
 - **γ (body effect coefficient)** quantifies the sensitivity of Vt to substrate bias.  
