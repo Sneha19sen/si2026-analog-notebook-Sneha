@@ -395,7 +395,7 @@ Key specs from the microphone [Datasheet](https://cdn.sparkfun.com/assets/0/5/8/
 - **Rth** (from datasheet) = 380 ohms.
 
 ### Circuit Diagram of Mic System
-![Mic Circuit](./m2k-labs/miccircuit.png)
+![Mic Circuit](./sch/miccircuit.png)
 
 **From Sparkfun schematic:**
 - Rin=5k, Rfb=300k, therefore Gain = 60
@@ -404,5 +404,51 @@ Key specs from the microphone [Datasheet](https://cdn.sparkfun.com/assets/0/5/8/
 - Input high-pass frequency = $1/2\pi RC = 1/2\pi 5k 4.7uF = 6.77 Hz$
 - Feedback Low-pass filter frequency = $1/2\pi RC = 1/2\pi 300k 27pF = 19.6kHz $
 - Input common-mode filter = $1/2\pi 10k 1uF = 15.9 Hz$
-![Mic Schematic](./m2k-labs/micsch.png)
+![Mic Schematic](./sch/micsch.png)
+## Magnitude and Phase Response
+
+An AC analysis was performed to study the frequency response of the microphone preamplifier. The magnitude response shows a **peak gain of approximately 27 dB** with a −3 dB bandwidth of about 14.1 kHz. Beyond this frequency, the gain gradually decreases due to the amplifier's bandwidth limitations.
+
+The phase response shows an increasing phase lag as the frequency increases, which is the expected behavior of the op-amp and the associated passive components. The results confirm that the preamplifier operates effectively over the intended audio frequency range.
+![Magnitude and Phase plot](./sch/magandphase.png)
+
+## Transient Response
+
+A transient analysis was performed by applying a **1 kHz sinusoidal input** with an amplitude of **126 µV** to the microphone preamplifier. The output waveform is centered around the DC bias voltage of **1.25 V**, demonstrating proper mid-supply biasing for single-supply operation.
+
+From the simulation, the output signal has a peak amplitude of approximately **7.43 mV**, corresponding to a voltage gain of approximately **59** (≈ **35.4 dB**). The output waveform closely follows the input without noticeable distortion, confirming that the amplifier provides stable amplification while maintaining signal integrity within the desired operating range.
+![Vin Vs Vout](./sch/VinVout.png)
+
+## Practical Circuit Implementation
+
+The practical implementation consists of a microphone preamplifier designed using an operational amplifier model in NGSpice. A **2.5 V battery supply** is used to power the circuit, while a **voltage divider (R3 and R4)** generates a stable **1.25 V reference voltage (Vref)** to bias the amplifier for single-supply operation.
+
+The microphone input is represented by a sinusoidal voltage source (**Vmic**). The input signal is AC-coupled through **C2**, which blocks any DC component before it enters the amplifier. Resistors **R1** and **R2** provide input conditioning and set the input impedance.
+
+The amplifier stage is modeled using a **high-gain voltage-controlled voltage source (E1)**, while **R5**, **R6**, and **C3** form the negative feedback network that determines the closed-loop gain and improves circuit stability. The output stage (**E2**) acts as a buffer, providing low output impedance to drive the load. Capacitors **C4** and **C5** are included for output filtering and stability.
+
+A transient simulation (`.tran`) is performed to observe the input and output waveforms. The NGSpice control script automatically measures the peak values of the input and output signals and calculates the voltage gain using:
+
+\[
+\text{Gain} = \frac{V_{\text{out,peak}}}{V_{\text{in,peak}}}
+\]
+
+This implementation verifies the amplifier's functionality by comparing the amplified output with the applied microphone input and evaluating its gain under transient conditions.
+![Practical circuit](./sch/practicalmic.png)
+
+## Simulation Output
+
+The transient simulation validates the operation of the microphone preamplifier by comparing the input and output waveforms. The **left plot** shows the microphone input signal, a sinusoidal waveform with a peak amplitude of approximately **126 μV**. The **right plot** shows the amplified output signal centered around the **1.25 V bias voltage**, demonstrating proper single-supply operation while preserving the AC signal.
+
+The NGSpice measurement results indicate an input peak amplitude of approximately **126 μV** and an output peak amplitude of approximately **7.42 mV**. Using these values, the calculated voltage gain is:
+
+\[
+A_v = \frac{V_{\text{out,peak}}}{V_{\text{in,peak}}}
+     = \frac{7.42\ \text{mV}}{126\ \mu\text{V}}
+     \approx 58.9
+\]
+
+The amplified output maintains the same frequency as the input while exhibiting a significantly larger amplitude, confirming the correct operation of the amplifier and the effectiveness of the feedback network. The simulation therefore verifies that the designed circuit provides a **voltage gain of approximately 59 V/V** without introducing distortion under the given operating conditions.
+
+![Output](./sch/pracoutput.png)
 ---
